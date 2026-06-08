@@ -14,10 +14,15 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-pip git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev cmake build-essential libffi-dev libssl-dev
-          pip3 install buildozer cython==0.29.37 virtualenv
+          # تثبيت إصدار مستقر من Cython متوافق مع Kivy
+          pip3 install --upgrade pip
+          pip3 install "cython<3.0"
+          pip3 install buildozer virtualenv
 
       - name: Build APK
         run: |
+          # تأكد من أن buildozer يقوم بتهيئة البيئة بشكل صحيح
+          buildozer android clean
           yes | buildozer android debug
 
       - name: Upload APK
